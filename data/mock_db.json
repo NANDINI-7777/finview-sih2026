@@ -1,0 +1,256 @@
+{
+  "users": {
+    "user-123": {
+      "id": "user-123",
+      "fullName": "Aarav Sharma",
+      "pan": "ABCDE1234F",
+      "mobile": "+91 98765 43210",
+      "email": "aarav.sharma@example.com",
+      "dob": "1994-06-18",
+      "city": "Bengaluru, Karnataka",
+      "emergencyContact": {
+        "name": "Priya Sharma",
+        "relation": "Spouse",
+        "mobile": "+91 98765 01234",
+        "accessAuthorized": true
+      }
+    }
+  },
+  "policies": {
+    "user-123": [
+      {
+        "policyId": "POL-LIC-88291",
+        "insurer": "Life Insurance Corp of India",
+        "insurerLogo": "lic",
+        "policyName": "Jeevan Amar Term Plan",
+        "policyType": "TERM_LIFE",
+        "policyCategory": "Life Insurance",
+        "coverageAmount": 10000000,
+        "currency": "INR",
+        "premiumAmount": 14250,
+        "premiumFrequency": "ANNUAL",
+        "startDate": "2021-03-15",
+        "expiryDate": "2051-03-14",
+        "renewalDueDate": "2026-08-25",
+        "status": "URGENT_DUE",
+        "gracePeriodDays": 30,
+        "nominee": "Priya Sharma (Spouse - 100%)",
+        "policyBondUrl": "#",
+        "daysRemaining": 3,
+        "urgencyLevel": "high"
+      },
+      {
+        "policyId": "POL-STAR-44120",
+        "insurer": "Star Health & Allied Insurance",
+        "insurerLogo": "star",
+        "policyName": "Family Health Optima Comprehensive",
+        "policyType": "HEALTH",
+        "policyCategory": "Health Insurance",
+        "coverageAmount": 1500000,
+        "currency": "INR",
+        "premiumAmount": 19800,
+        "premiumFrequency": "ANNUAL",
+        "startDate": "2023-08-01",
+        "expiryDate": "2026-07-31",
+        "renewalDueDate": "2026-08-01",
+        "status": "IN_GRACE_PERIOD",
+        "gracePeriodDays": 30,
+        "gracePeriodEnd": "2026-08-31",
+        "membersCovered": ["Aarav Sharma (Self)", "Priya Sharma (Spouse)", "Kabir Sharma (Son)"],
+        "nominee": "Priya Sharma (Spouse)",
+        "daysRemaining": 9,
+        "urgencyLevel": "critical"
+      },
+      {
+        "policyId": "POL-HDFC-99214",
+        "insurer": "HDFC ERGO General Insurance",
+        "insurerLogo": "hdfc",
+        "policyName": "Private Car Comprehensive Cover",
+        "policyType": "MOTOR",
+        "policyCategory": "Motor Insurance",
+        "vehicleNumber": "KA-01-MJ-4590",
+        "vehicleModel": "Hyundai Creta SX 2022",
+        "coverageAmount": 1250000,
+        "currency": "INR",
+        "premiumAmount": 16400,
+        "premiumFrequency": "ANNUAL",
+        "startDate": "2025-11-10",
+        "expiryDate": "2026-11-09",
+        "renewalDueDate": "2026-11-09",
+        "status": "ACTIVE",
+        "nominee": "Priya Sharma (Spouse)",
+        "daysRemaining": 79,
+        "urgencyLevel": "low"
+      },
+      {
+        "policyId": "POL-MAX-10294",
+        "insurer": "Max Life Insurance Co.",
+        "insurerLogo": "max",
+        "policyName": "Smart Wealth Plan (ULIP)",
+        "policyType": "INVESTMENT_INSURANCE",
+        "policyCategory": "Life & Savings",
+        "coverageAmount": 2500000,
+        "currency": "INR",
+        "premiumAmount": 60000,
+        "premiumFrequency": "ANNUAL",
+        "startDate": "2022-01-20",
+        "expiryDate": "2042-01-19",
+        "renewalDueDate": "2027-01-20",
+        "status": "ACTIVE",
+        "fundValue": 284500,
+        "nominee": "Not Registered (⚠️ Missing Nominee)",
+        "daysRemaining": 151,
+        "urgencyLevel": "medium_warning"
+      }
+    ]
+  },
+  "holdings": {
+    "user-123": [
+      {
+        "folioId": "MF-CAMS-77321",
+        "schemeName": "Parag Parikh Flexi Cap Fund - Direct Growth",
+        "category": "Mutual Fund",
+        "assetClass": "EQUITY",
+        "units": 2450.41,
+        "nav": 92.15,
+        "currentValue": 225805,
+        "investedValue": 160000,
+        "returns": {
+          "absolute": 65805,
+          "percentage": 41.13
+        },
+        "sipAmount": 5000,
+        "nextSipDate": "2026-09-05",
+        "nomineeRegistered": true
+      },
+      {
+        "folioId": "MF-KFIN-19087",
+        "schemeName": "HDFC Corporate Bond Fund - Direct Growth",
+        "category": "Mutual Fund",
+        "assetClass": "DEBT",
+        "units": 4510.12,
+        "nav": 28.40,
+        "currentValue": 128087,
+        "investedValue": 115000,
+        "returns": {
+          "absolute": 13087,
+          "percentage": 11.38
+        },
+        "sipAmount": 3000,
+        "nextSipDate": "2026-09-10",
+        "nomineeRegistered": true
+      },
+      {
+        "folioId": "NPS-CRA-559012",
+        "schemeName": "National Pension System (NPS) - Tier I",
+        "category": "Retirement Pension",
+        "assetClass": "RETIREMENT",
+        "units": null,
+        "nav": null,
+        "currentValue": 580000,
+        "investedValue": 440000,
+        "returns": {
+          "absolute": 140000,
+          "percentage": 31.81
+        },
+        "maturityDate": "2054-06-18",
+        "nomineeRegistered": true
+      },
+      {
+        "folioId": "SGB-RBI-2021-V",
+        "schemeName": "Sovereign Gold Bond 2021-22 Series V",
+        "category": "Gold",
+        "assetClass": "COMMODITY",
+        "units": 25,
+        "unitPrice": 7250,
+        "currentValue": 181250,
+        "investedValue": 119750,
+        "returns": {
+          "absolute": 61500,
+          "percentage": 51.35
+        },
+        "maturityDate": "2029-10-25",
+        "nomineeRegistered": false
+      }
+    ]
+  },
+  "bankAccounts": {
+    "user-123": {
+      "savings": [
+        {
+          "accountNumber": "XXXXXX4512",
+          "bankName": "HDFC Bank",
+          "accountType": "SAVINGS",
+          "balance": 184500.75,
+          "currency": "INR",
+          "branch": "Indiranagar, Bengaluru",
+          "nomineeRegistered": true
+        },
+        {
+          "accountNumber": "XXXXXX8890",
+          "bankName": "State Bank of India",
+          "accountType": "SAVINGS",
+          "balance": 45210.00,
+          "currency": "INR",
+          "branch": "Koramangala, Bengaluru",
+          "nomineeRegistered": true
+        }
+      ],
+      "fixedDeposits": [
+        {
+          "fdNumber": "FD-HDFC-99120",
+          "bankName": "HDFC Bank",
+          "principal": 300000,
+          "interestRate": 7.25,
+          "startDate": "2024-02-15",
+          "maturityDate": "2027-02-15",
+          "maturityValue": 371940,
+          "status": "ACTIVE",
+          "nominee": "Priya Sharma"
+        },
+        {
+          "fdNumber": "FD-SBI-33019",
+          "bankName": "State Bank of India",
+          "principal": 150000,
+          "interestRate": 6.80,
+          "startDate": "2025-05-10",
+          "maturityDate": "2026-11-10",
+          "maturityValue": 165680,
+          "status": "ACTIVE",
+          "nominee": "Priya Sharma"
+        }
+      ]
+    }
+  },
+  "familyMembers": {
+    "user-123": [
+      {
+        "id": "fam-1",
+        "name": "Priya Sharma",
+        "relationship": "Spouse",
+        "dob": "1995-11-04",
+        "hasDirectAccount": true,
+        "isEmergencyContact": true,
+        "policiesLinkedAsNominee": 4
+      },
+      {
+        "id": "fam-2",
+        "name": "Kabir Sharma",
+        "relationship": "Son",
+        "dob": "2022-04-12",
+        "hasDirectAccount": false,
+        "isEmergencyContact": false,
+        "policiesLinkedAsNominee": 0
+      },
+      {
+        "id": "fam-3",
+        "name": "Rajendra Sharma",
+        "relationship": "Father",
+        "dob": "1963-02-10",
+        "hasDirectAccount": false,
+        "isEmergencyContact": false,
+        "policiesLinkedAsNominee": 0
+      }
+    ]
+  }
+}

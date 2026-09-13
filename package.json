@@ -1,0 +1,12 @@
+{
+  "name": "finview-sih2026",
+  "version": "1.0.0",
+  "description": "FinView — Unified Financial Asset & Insurance Management Platform (SIH 2026)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": ["sih2026", "fintech", "insurance", "account-aggregator", "dpdp"],
+  "author": "FinView Team",
+  "license": "MIT"
+}

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FinView — Unified Financial Asset & Insurance Management Platform (SIH 2026)</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- Chart.js for data visualization -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar">
+    <div class="brand">
+      <div class="brand-icon">
+        <i data-lucide="shield-check"></i>
+      </div>
+      <div class="brand-text">
+        <h1>FinView</h1>
+        <span>Unified Financial Asset & Insurance Management (DPI Layer)</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="badge-sih">
+        <span class="badge-dot" id="globalStatusDot"></span>
+        <span id="globalStatusText">Simulated DPI Environment</span>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="toggleInspector()">
+        <i data-lucide="terminal"></i> Judge API Inspector
+      </button>
+    </div>
+  </nav>
+
+  <!-- Stepper Navigation -->
+  <div class="stepper-container">
+    <div class="stepper">
+      <div class="step-item active" id="step1-indicator" onclick="goToStep(1)">
+        <div class="step-num">1</div>
+        <span>Demo Identity & KYC</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" id="step2-indicator" onclick="goToStep(2)">
+        <div class="step-num">2</div>
+        <span>DPDP Consent Matrix</span>
+      </div>
+      <div class="step-divider"></div>
+      <div class="step-item" id="step3-indicator" onclick="goToStep(3)">
+        <div class="step-num">3</div>
+        <span>Unified Dashboard</span>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+
+    <!-- ================================================================= -->
+    <!-- STEP 1: DEMO AUTH & IDENTITY VERIFICATION                         -->
+    <!-- ================================================================= -->
+    <section id="step1-view" class="auth-card">
+      <div class="auth-header">
+        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🇮🇳</div>
+        <h2>Citizen Identity Verification</h2>
+        <p>Demonstrating consent-based single-window financial discovery for SIH 2026.</p>
+      </div>
+
+      <div style="background: #f1f5f9; border-radius: 8px; padding: 0.75rem; font-size: 0.8rem; color: #475569; margin-bottom: 1.25rem;">
+        <strong>💡 Prototype Notice:</strong> For hackathon evaluation, credentials are pre-populated with simulated Indian citizen records (DPDP test suite).
+      </div>
+
+      <form id="authForm" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group">
+          <label>PAN Card Number</label>
+          <input type="text" id="panInput" class="form-control" value="ABCDE1234F" placeholder="e.g. ABCDE1234F" required />
+        </div>
+
+        <div class="form-group">
+          <label>Registered Mobile Number</label>
+          <input type="text" id="mobileInput" class="form-control" value="+91 98765 43210" placeholder="+91 98765 43210" required />
+        </div>
+
+        <div class="form-group" id="otpGroup" style="display: none;">
+          <label>Enter 6-Digit Demo OTP (Fixed: <code>123456</code>)</label>
+          <input type="text" id="otpInput" class="form-control" value="123456" maxlength="6" />
+          <span style="font-size: 0.75rem; color: #10b981; margin-top: 4px; display: block;">✓ Simulated OTP sent to +91 98765 43210</span>
+        </div>
+
+        <button type="submit" id="authBtn" class="btn btn-primary btn-full" style="margin-top: 1rem;">
+          <i data-lucide="key-round"></i> Verify Identity & Proceed to Consent
+        </button>
+      </form>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- STEP 2: DPDP ACT 2023 & AA CONSENT SELECTION MATRIX              -->
+    <!-- ================================================================= -->
+    <section id="step2-view" class="auth-card" style="display: none; max-width: 620px;">
+      <div class="auth-header">
+        <h2>DPDP Scoped Consent Authorization</h2>
+        <p>In accordance with Digital Personal Data Protection Act 2023 & RBI/IRDAI AA Framework.</p>
+      </div>
+
+      <div style="margin-bottom: 1rem;">
+        <label style="font-size: 0.85rem; font-weight: 700; color: #334155; margin-bottom: 0.5rem; display: block;">
+          Select Financial Information Providers (FIPs) to Query:
+        </label>
+
+        <!-- Scope: Insurance -->
+        <label class="consent-box checked" id="box-ins">
+          <input type="checkbox" id="scope-ins" value="INSURANCE_READ" checked onchange="updateConsentBoxStyle('box-ins', this)" />
+          <div class="consent-text">
+            <h4>🛡️ Insurance Policies (Life, Health, Motor)</h4>
+            <p>Queries IRDAI e-Insurance Repositories & General Insurers for active policies, premium dues, and nominee statuses.</p>
+          </div>
+        </label>
+
+        <!-- Scope: Investments -->
+        <label class="consent-box checked" id="box-inv">
+          <input type="checkbox" id="scope-inv" value="INVESTMENT_READ" checked onchange="updateConsentBoxStyle('box-inv', this)" />
+          <div class="consent-text">
+            <h4>📈 Mutual Funds, NPS & Sovereign Gold Bonds</h4>
+            <p>Queries SEBI-regulated RTAs (CAMS, KFintech) and NPS CRA for consolidated portfolio valuation.</p>
+          </div>
+        </label>
+
+        <!-- Scope: Bank Accounts & FDs -->
+        <label class="consent-box checked" id="box-bnk">
+          <input type="checkbox" id="scope-bnk" value="BANK_READ" checked onchange="updateConsentBoxStyle('box-bnk', this)" />
+          <div class="consent-text">
+            <h4>🏦 Bank Savings & Fixed Deposits (FDs)</h4>
+            <p>Queries RBI Scheduled Banks for recurring deposits, FD maturity dates, and account liquidity.</p>
+          </div>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label>Consent Purpose</label>
+        <select id="consentPurpose" class="form-control">
+          <option value="PERSONAL_FINANCE_DASHBOARD">PERSONAL_FINANCE_DASHBOARD (Unified Asset & Policy Monitoring)</option>
+          <option value="INSURANCE_LAPSE_PREVENTION">INSURANCE_LAPSE_PREVENTION (Proactive Premium Tracking)</option>
+          <option value="FAMILY_ESTATE_NOMINEE_AUDIT">FAMILY_ESTATE_NOMINEE_AUDIT (Emergency Access Preparation)</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Consent Validity Duration: <span id="dataLifeLabel" style="color: var(--primary); font-weight: bold;">30 Days</span></label>
+        <input type="range" id="dataLifeSlider" min="7" max="365" value="30" style="width: 100%; accent-color: var(--primary);" oninput="document.getElementById('dataLifeLabel').innerText = this.value + ' Days'" />
+      </div>
+
+      <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 8px; padding: 0.75rem; font-size: 0.75rem; color: #64748b; margin-bottom: 1.25rem;">
+        🔒 <strong>Consent Guarantees:</strong> You may revoke this consent anytime in 1-click. FinView does not sell or share personal data with advertisers or third parties.
+      </div>
+
+      <div style="display: flex; gap: 0.75rem;">
+        <button class="btn btn-secondary" onclick="goToStep(1)" style="flex: 1;">Back</button>
+        <button class="btn btn-primary" onclick="handleIssueConsent()" style="flex: 2;">
+          <i data-lucide="check-circle-2"></i> Issue Signed AA Consent Token
+        </button>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- STEP 3: UNIFIED DASHBOARD                                         -->
+    <!-- ================================================================= -->
+    <section id="step3-view" style="display: none;">
+
+      <!-- User Greeting & Quick Stats Bar -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800; color: #0f172a;" id="userGreeting">Welcome, Aarav Sharma</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;" id="userSubtext">PAN: ABCDE1234F • Linked Mobile: +91 98765 43210 • Bengaluru</p>
+        </div>
+
+        <div style="display: flex; gap: 0.5rem;">
+          <button class="btn btn-secondary btn-sm" onclick="fetchAggregateData(true)">
+            <i data-lucide="refresh-cw"></i> Sync FIP Data
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="revokeCurrentConsent()">
+            <i data-lucide="shield-off"></i> Revoke Consent
+          </button>
+        </div>
+      </div>
+
+      <!-- Critical Notifications & Urgency Banners -->
+      <div id="notificationsContainer"></div>
+
+      <!-- Main Tabs Header -->
+      <div class="tabs-header">
+        <button class="tab-btn active" onclick="switchTab('overview')">
+          <i data-lucide="layout-dashboard"></i> Overview
+        </button>
+        <button class="tab-btn" onclick="switchTab('insurance')">
+          <i data-lucide="shield"></i> Insurance Hub <span class="tab-pill" id="badge-policy-count">4</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('lapse')">
+          <i data-lucide="bell-ring"></i> Lapse Prevention <span class="tab-pill" style="background:#fee2e2; color:#ef4444;" id="badge-urgent-count">2 Alerts</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('wealth')">
+          <i data-lucide="trending-up"></i> Wealth & Holdings <span class="tab-pill" id="badge-invest-count">4</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('family')">
+          <i data-lucide="users"></i> Family & Nominee Vault
+        </button>
+        <button class="tab-btn" onclick="switchTab('privacy')">
+          <i data-lucide="lock"></i> Privacy & Consent Hub
+        </button>
+      </div>
+
+
+      <!-- TAB 1: OVERVIEW -->
+      <div id="tab-overview" class="tab-content">
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Financial Protection Score</span>
+              <i data-lucide="activity" style="color: #10b981;"></i>
+            </div>
+            <div class="metric-value" style="color: #0284c7;">84 <span style="font-size: 1rem; color: #64748b;">/ 100</span></div>
+            <div class="metric-sub" style="color: #10b981;">
+              <i data-lucide="trending-up" style="width:14px;height:14px;"></i> Good Coverage (1 Action Needed)
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Total Active Insurance Cover</span>
+              <i data-lucide="shield-check" style="color: #0284c7;"></i>
+            </div>
+            <div class="metric-value" id="card-total-cover">₹1,52,50,000</div>
+            <div class="metric-sub" style="color: var(--text-muted);">
+              Across 4 policies (Life, Health, Motor)
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Upcoming Due (Next 30 Days)</span>
+              <i data-lucide="clock" style="color: #f59e0b;"></i>
+            </div>
+            <div class="metric-value" style="color: #d97706;" id="card-upcoming-due">₹34,050</div>
+            <div class="metric-sub" style="color: #dc2626;">
+              ⚠️ 2 policies requiring payment
+            </div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>Consolidated Wealth Assets</span>
+              <i data-lucide="coins" style="color: #6366f1;"></i>
+            </div>
+            <div class="metric-value" id="card-total-wealth">₹15,74,642</div>
+            <div class="metric-sub" style="color: #10b981;">
+              Mutual Funds, NPS, FDs, Gold
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+          <div style="background: white; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow);">
+            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #0f172a;">🛡️ Insurance Coverage by Category</h3>
+            <div style="height: 240px; position: relative;">
+              <canvas id="coveragePieChart"></canvas>
+            </div>
+          </div>
+
+          <div style="background: white; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow);">
+            <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 1rem; color: #0f172a;">📈 Asset Allocation & Wealth Breakdown</h3>
+            <div style="height: 240px; position: relative;">
+              <canvas id="wealthBarChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 2: INSURANCE HUB -->
+      <div id="tab-insurance" class="tab-content" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.75rem;">
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 800;">My Policies Repository</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Consolidated from IRDAI e-Insurance Account (eIA) and participating Insurer FIPs.</p>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <button class="btn btn-secondary btn-sm" onclick="filterPolicies('ALL')">All</button>
+            <button class="btn btn-secondary btn-sm" onclick="filterPolicies('LIFE')">Life</button>
+            <button class="btn btn-secondary btn-sm" onclick="filterPolicies('HEALTH')">Health</button>
+            <button class="btn btn-secondary btn-sm" onclick="filterPolicies('MOTOR')">Motor</button>
+          </div>
+        </div>
+
+        <div id="policiesGrid" class="cards-grid"></div>
+      </div>
+
+
+      <!-- TAB 3: SMART LAPSE PREVENTION CENTER -->
+      <div id="tab-lapse" class="tab-content" style="display: none;">
+        <div class="alert-banner alert-danger">
+          <div class="alert-content">
+            <span class="alert-icon">🚨</span>
+            <div>
+              <strong>Lapse Risk Prevention Engine Active:</strong>
+              <p style="font-size: 0.85rem; margin-top: 2px;">Predictive timeline tracks grace periods, penalty dates, and automated multi-tier notifications.</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem;">Chronological Payment Dues Timeline</h3>
+        <div class="timeline" id="lapseTimeline"></div>
+      </div>
+
+
+      <!-- TAB 4: WEALTH & INVESTMENTS -->
+      <div id="tab-wealth" class="tab-content" style="display: none;">
+        <div style="margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.2rem; font-weight: 800;">Investment Holdings & Bank FDs</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted);">Aggregated from SEBI RTAs (CAMS, KFintech) and Scheduled Banks via AA consent.</p>
+        </div>
+
+        <h4 style="font-size: 1rem; margin-bottom: 0.75rem; color: #334155;">Mutual Funds, NPS & Gold Bonds</h4>
+        <div class="cards-grid" id="holdingsGrid" style="margin-bottom: 2rem;"></div>
+
+        <h4 style="font-size: 1rem; margin-bottom: 0.75rem; color: #334155;">Bank Accounts & Fixed Deposits (FDs)</h4>
+        <div class="cards-grid" id="bankingGrid"></div>
+      </div>
+
+
+      <!-- TAB 5: FAMILY & NOMINEE VAULT -->
+      <div id="tab-family" class="tab-content" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h3 style="font-size: 1.2rem; font-weight: 800;">Family & Nominee Governance</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">Ensure zero unclaimed assets by auditing nominee allocations across all holdings.</p>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.25rem;">
+          <!-- Emergency Contact Card -->
+          <div style="background: white; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 1rem; font-weight: 700;">Authorized Emergency Contact</h4>
+              <span class="status-badge status-active">Active</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              In case of incapacitation, this contact can view policy bond IDs and claims helpline numbers with verified death/hospital proof.
+            </p>
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px; font-size: 0.85rem;">
+              <div><strong>Name:</strong> Priya Sharma (Spouse)</div>
+              <div><strong>Contact:</strong> +91 98765 01234</div>
+              <div><strong>Status:</strong> Digital Authorization Active</div>
+            </div>
+          </div>
+
+          <!-- Nominee Audit Scanner -->
+          <div style="background: white; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.25rem; box-shadow: var(--shadow);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h4 style="font-size: 1rem; font-weight: 700;">Nominee Health Audit</h4>
+              <span class="status-badge status-urgent">1 Warning</span>
+            </div>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Automated scan across 4 policies and 4 investment folios.
+            </p>
+            <ul style="font-size: 0.85rem; line-height: 1.6; list-style-type: none;">
+              <li style="color: #10b981;">✓ 3 Insurance Policies have active nominee registered.</li>
+              <li style="color: #dc2626; font-weight: 600;">⚠️ 1 Policy (Max Life ULIP) missing registered nominee!</li>
+              <li style="color: #10b981;">✓ All Bank FDs have nominee registered.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- TAB 6: PRIVACY & CONSENT HUB -->
+      <div id="tab-privacy" class="tab-content" style="display: none;">
+        <div style="background: white; border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.2rem; font-weight: 800; margin-bottom: 0.5rem;">DPDP Act 2023 Consent Audit Record</h3>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+            This consent artifact is signed via HMAC-SHA256 and verified independently by each Financial Information Provider (FIP).
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; font-size: 0.85rem; margin-bottom: 1.25rem;">
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Consent ID</span>
+              <div style="font-weight: 700; font-family: monospace;" id="lbl-consent-id">--</div>
+            </div>
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Purpose</span>
+              <div style="font-weight: 700;" id="lbl-purpose">--</div>
+            </div>
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Status</span>
+              <div style="font-weight: 700;" id="lbl-status">--</div>
+            </div>
+            <div style="background: #f8fafc; padding: 0.75rem; border-radius: 8px;">
+              <span style="color: var(--text-muted); font-size: 0.75rem;">Expires At</span>
+              <div style="font-weight: 700;" id="lbl-expiry">--</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <label style="font-size: 0.8rem; font-weight: 700; color: #475569;">Active Decoded JWT Claims:</label>
+            <pre class="code-block" id="jwtClaimsBlock">// Issue consent to view decoded token claims</pre>
+          </div>
+
+          <div style="border-top: 1px solid #e2e8f0; padding-top: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <strong style="color: #dc2626; font-size: 0.9rem;">Revoke Consent Test (Judge Demonstration)</strong>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Revoking consent immediately invalidates access tokens across all FIPs.</p>
+            </div>
+            <button class="btn btn-danger" onclick="revokeCurrentConsent()">
+              <i data-lucide="shield-ban"></i> Instant 1-Click Revocation
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ================================================================= -->
+  <!-- JUDGE API INSPECTOR DRAWER (SLIDE OVER)                           -->
+  <!-- ================================================================= -->
+  <aside class="inspector-drawer" id="inspectorDrawer">
+    <div class="inspector-header">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <i data-lucide="terminal" style="color: #38bdf8;"></i>
+        <h3 style="font-size: 1rem; color: white;">Judge API & Architecture Inspector</h3>
+      </div>
+      <button class="btn btn-secondary btn-sm" onclick="toggleInspector()" style="background: #334155; color: white; border: none;">✕</button>
+    </div>
+
+    <div class="inspector-body">
+      <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 1rem;">
+        Inspect real-time API queries, cryptographic token verification, and data flow between FinView FIU and simulated FIPs.
+      </p>
+
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 700; color: #38bdf8; font-size: 0.8rem; text-transform: uppercase;">1. System Architecture Map</div>
+        <div style="background: #020617; border: 1px solid #1e293b; border-radius: 6px; padding: 0.75rem; margin-top: 0.35rem; font-size: 0.75rem; line-height: 1.5; color: #cbd5e1;">
+          Citizen (KYC/Auth) ➔ <strong>Consent Manager</strong> (JWT Signed) ➔ <strong>FinView Gateway</strong> ➔ <strong>FIP Microservices</strong> (IRDAI / SEBI / RBI).
+        </div>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 700; color: #38bdf8; font-size: 0.8rem; text-transform: uppercase;">2. Live Request / Response Log</div>
+        <pre class="code-block" id="inspectorLog" style="max-height: 250px; overflow-y: auto;">// No requests recorded yet</pre>
+      </div>
+
+      <div style="margin-bottom: 1.25rem;">
+        <div style="font-weight: 700; color: #38bdf8; font-size: 0.8rem; text-transform: uppercase;">3. DPDP Act Compliance Checklist</div>
+        <ul style="list-style: none; font-size: 0.75rem; color: #cbd5e1; line-height: 1.8; margin-top: 0.35rem;">
+          <li><span style="color: #4ade80;">✔</span> Explicit Scoped Authorization (Insurance / Investments / Bank)</li>
+          <li><span style="color: #4ade80;">✔</span> Defined Purpose Limitation (`PERSONAL_FINANCE_DASHBOARD`)</li>
+          <li><span style="color: #4ade80;">✔</span> Data Retention Period Limit (User Defined Slider)</li>
+          <li><span style="color: #4ade80;">✔</span> Unconditional Right to Withdraw Consent (Instant Revoke)</li>
+          <li><span style="color: #4ade80;">✔</span> Zero Data Selling / Commercialization Guarantee</li>
+        </ul>
+      </div>
+
+      <div>
+        <div style="font-weight: 700; color: #38bdf8; font-size: 0.8rem; text-transform: uppercase;">4. Reproducible cURL Command</div>
+        <pre class="code-block" id="curlSnippet" style="font-size: 0.7rem;">curl -H "Authorization: Bearer <TOKEN>" http://localhost:5000/insurer/api/v1/policies</pre>
+      </div>
+    </div>
+  </aside>
+
+
+  <!-- ================================================================= -->
+  <!-- MODAL: WHATSAPP / SMS REMINDER SIMULATION                         -->
+  <!-- ================================================================= -->
+  <div class="modal-overlay" id="reminderModal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.1rem; font-weight: 800;">Simulated Notification Trigger</h3>
+        <button onclick="closeModal()" style="border: none; background: none; font-size: 1.2rem; cursor: pointer;">✕</button>
+      </div>
+
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+        Simulating multi-channel proactive reminder dispatch via approved WhatsApp Business API / SMS gateway.
+      </p>
+
+      <div class="phone-mockup">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #1e293b;">
+          <span>💬 WhatsApp • FinView Verified Service</span>
+        </div>
+        <div class="whatsapp-bubble" id="modalMessageText">
+          Loading notification template...
+          <div class="whatsapp-time">Just now ✓✓</div>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+        <button class="btn btn-secondary btn-full" onclick="closeModal()">Close</button>
+        <button class="btn btn-primary btn-full" onclick="triggerMockDispatch()">
+          <i data-lucide="send"></i> Test Dispatch
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
