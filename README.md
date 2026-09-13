@@ -46,6 +46,10 @@ Millions of Indian citizens hold financial assets and insurance policies distrib
 
 ## 🏛️ System Architecture
 
+<p align="center">
+  <img src="assets/finview_architecture_diagram.jpg" alt="FinView System Architecture" width="850"/>
+</p>
+
 ```mermaid
 graph TD
     User([Citizen / User]) -->|1. KYC & Auth| Auth[FinView Auth Engine]
@@ -82,6 +86,10 @@ FinView adheres to the core tenets of the **Digital Personal Data Protection (DP
 ---
 
 ## 🛠️ Tech Stack & Specifications
+
+<p align="center">
+  <img src="assets/finview_tech_stack.jpg" alt="FinView Tech Stack" width="850"/>
+</p>
 
 * **Backend:** Node.js HTTP Server (Pure standard library implementation — zero runtime dependency footprint)
 * **Frontend:** Responsive Single-Page Application (SPA) utilizing modern Fintech UI, Tailwind-compatible styling, Lucide icons, and Chart.js.

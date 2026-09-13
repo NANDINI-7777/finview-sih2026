@@ -4,8 +4,5 @@ node_modules/
 *.log
 .vercel
 
-# Exclude internal documents & diagrams from GitHub
+# Exclude internal rehearsal notes
 docs/
-*.jpg
-*.jpeg
-*.png
