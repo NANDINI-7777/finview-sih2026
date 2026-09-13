@@ -121,11 +121,5 @@ FinView includes native [`vercel.json`](vercel.json) configuration for instant z
 
 ---
 
-## 📖 Team & Research Documentation
-
-* For internal pitch guidelines, regulatory Q&A, and presentation strategy, refer to [`docs/JUDGE_QA.md`](docs/JUDGE_QA.md).
-
----
-
 ## 📄 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.

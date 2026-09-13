@@ -3,3 +3,9 @@ node_modules/
 .DS_Store
 *.log
 .vercel
+
+# Exclude internal documents & diagrams from GitHub
+docs/
+*.jpg
+*.jpeg
+*.png
