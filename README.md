@@ -1,100 +1,131 @@
 # 🛡️ FinView — Unified Financial Asset & Insurance Management Platform
-**Smart India Hackathon (SIH) 2026 Prototype**
 
-> A privacy-first, consent-governed monitoring layer built on India's Digital Public Infrastructure (DPI), aligning with **IRDAI e-Insurance Accounts (eIA)**, **Account Aggregator (AA) framework**, and **DPDP Act 2023**.
+[![Smart India Hackathon 2026](https://img.shields.io/badge/SIH-2026_Prototype-blue.svg)](https://sih.gov.in)
+[![DPDP Act 2023](https://img.shields.io/badge/Compliance-DPDP_Act_2023-emerald.svg)](#privacy--dpdp-act-compliance)
+[![Account Aggregator](https://img.shields.io/badge/Ecosystem-Sahamati_AA_Standard-cyan.svg)](#system-architecture)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Deployment: Vercel](https://img.shields.io/badge/Deploy-Vercel_Ready-black.svg)](#-deployment)
 
----
-
-## 🚀 Quickstart (Zero Dependencies)
-
-FinView backend is built with pure Node.js standard modules (`http`, `crypto`, `fs`, `path`). **No `npm install` needed.**
-
-```bash
-# 1. Navigate to the project root
-cd "d:/PROJECT/SIH 2026"
-
-# 2. Start the prototype server
-node server.js
-
-# 3. Open in your browser
-# Visit http://localhost:5000
-```
+> **FinView** is a privacy-first, consent-governed monitoring and intelligence platform built on India's **Digital Public Infrastructure (DPI)**. It bridges the gap between **IRDAI e-Insurance Accounts (eIA)**, the **Account Aggregator (AA) ecosystem**, and citizens to eliminate forgotten investments, prevent policy lapses, and audit family nominee coverage.
 
 ---
 
-## 🌟 Key Features & SIH Innovations
+## 📌 Problem Statement & Context
 
-1. **Consent-Governed Data Flow (DPDP Act 2023 Compliant)**:
-   - Scoped authorization (`INSURANCE_READ`, `INVESTMENT_READ`, `BANK_READ`).
-   - Defined purpose limitation and user-controlled data life duration.
-   - **Instant 1-Click Revocation** with real-time cryptographic token cutoff across all FIPs.
+Millions of Indian citizens hold financial assets and insurance policies distributed across disparate insurers, mutual fund houses, pension providers (NPS), and scheduled banks. 
 
-2. **Proactive Smart Lapse Prevention Engine**:
-   - Multi-tier alert hierarchy (30-day, 15-day, 7-day, 3-day countdowns).
-   - Critical **Grace Period Warning Banner** (preventing policy lapse and loss of accumulated bonuses).
-   - Multi-channel notification simulation (WhatsApp Business / SMS).
+* **The Problem:** Lack of a single, unified view leads to missed premium deadlines, accidental policy lapses, and massive unclaimed financial assets (**₹35,000+ Crore** in the Indian financial ecosystem).
+* **The FinView Solution:** A unified monitoring layer providing **real-time policy visibility**, **multi-tier lapse prevention alerts**, **nominee gap audits**, and **instant, revocable DPDP consent governance**.
 
-3. **Consolidated Financial Portfolio & Protection Score**:
-   - Single-screen aggregation of Life, Health, Motor policies alongside Mutual Funds, NPS Tier-1, and Bank Fixed Deposits.
-   - Real-time **Financial Protection Score (84/100)** with actionable insights.
+---
 
-4. **Family & Nominee Governance Vault**:
-   - Automated **Nominee Gap Scanner** (detects missing nominees to prevent unclaimed assets).
-   - Authorized Emergency Contact access preview for claims facilitation.
+## ✨ Key Features
 
-5. **Judge API & Architecture Inspector**:
-   - Built-in slide-over inspector displaying live cryptographic JWT claims, HTTP request/response payloads, and reproducible cURL snippets.
+### 1. 🛡️ Unified Insurance & Asset Repository
+* Aggregates Life, Health, and Motor insurance policies alongside Mutual Funds, NPS Tier-1 holdings, and Bank Fixed Deposits into a single pane of glass.
+* Tracks active policy status, sum assured, next premium due dates, and fund valuations.
+
+### 2. 🚨 Smart Lapse Prevention Engine
+* **Predictive Countdown Alerts:** Multi-tier alert hierarchy at 30-day, 15-day, 7-day, and 3-day intervals.
+* **Grace Period Safeguard:** Identifies policies within the critical 30-day grace period to prevent loss of accumulated bonuses and termination of coverage.
+* **Multi-Channel Dispatch Simulation:** Automated WhatsApp Business and SMS notification templates.
+
+### 3. 👨‍👩‍👧 Family & Nominee Governance Vault
+* **Nominee Gap Audit:** Automated scanning to flag policies or folios missing registered nominees, reducing the risk of estate disputes and unclaimed assets.
+* **Emergency Contact Access:** Authorizes designated family members to view essential policy numbers and claim helplines with verified documentation.
+
+### 4. 🔒 DPDP Act 2023 Consent Control Hub
+* **Granular Scoped Access:** Users independently authorize `INSURANCE_READ`, `INVESTMENT_READ`, and `BANK_READ`.
+* **Purpose & Retention Limits:** Strict purpose binding (`PERSONAL_FINANCE_DASHBOARD`) and user-defined data validity timelines.
+* **Instant 1-Click Revocation:** Users can withdraw consent at any time, immediately invalidating cryptographic access tokens across all FIPs.
+
+### 5. 🔍 Live Judge API & Architecture Inspector
+* Embedded slide-over developer drawer displaying live HMAC-SHA256 JWT claims, raw FIP JSON payloads, and reproducible cURL commands.
 
 ---
 
 ## 🏛️ System Architecture
 
-```
-+-------------------------------------------------------------+
-|                  Citizen / User Interface                   |
-|     (Identity Verification -> DPDP Scoped Consent Form)     |
-+------------------------------+------------------------------+
-                               |
-                               v
-+-------------------------------------------------------------+
-|          Consent Manager (AA & DPDP Act Standard)           |
-|        - Issues Scoped HMAC-SHA256 Signed AA Tokens         |
-|        - Real-Time Revocation & Consent Status Registry     |
-+------------------------------+------------------------------+
-                               | (Bearer Token with Scopes)
-                               v
-+-------------------------------------------------------------+
-|               FinView Multi-FIP Gateway Engine              |
-+---------------+--------------+--------------+---------------+
-|               |              |              |               |
-v               v              v              v               v
-[Insurer FIP]   [RTA/MF FIP]   [Bank FIP]     [Lapse Engine]  [Nominee Vault]
-(IRDAI / eIA)   (SEBI / NPS)   (RBI Banking)  (Multi-tier)    (Audit & Gap)
+```mermaid
+graph TD
+    User([Citizen / User]) -->|1. KYC & Auth| Auth[FinView Auth Engine]
+    User -->|2. Scoped Permission| CM[Consent Manager - DPDP Compliant]
+    CM -->|3. Signed AA JWT Token| FIPGateway[FinView Aggregator Gateway]
+    
+    subgraph Mock FIP Ecosystem
+        FIPGateway -->|INSURANCE_READ| InsurerFIP[(IRDAI Insurer FIP - LIC/Health)]
+        FIPGateway -->|INVESTMENT_READ| InvestFIP[(SEBI RTA FIP - CAMS/KFintech/NPS)]
+        FIPGateway -->|BANK_READ| BankFIP[(RBI Scheduled Bank FIP - Accounts/FDs)]
+    end
+    
+    InsurerFIP --> Engine[Analytics & Lapse Prevention Engine]
+    InvestFIP --> Engine
+    BankFIP --> Engine
+    
+    Engine --> Dashboard[Unified Asset & Policy Dashboard]
+    Engine --> LapseTimeline[Multi-Tier Lapse Prevention Alerts]
+    Engine --> NomineeVault[Nominee Audit & Family Vault]
 ```
 
 ---
 
-## 📋 SIH Judge Presentation Golden Rules
+## 🔒 Privacy & DPDP Act Compliance
 
-| ❌ NEVER SAY THIS TO JUDGES | ✅ ALWAYS SAY THIS INSTEAD |
-| :--- | :--- |
-| *"PAN and OTP automatically fetches all insurance policies directly."* | *"PAN/OTP handles citizen authentication; actual data is fetched via authorized AA Consent from participating FIPs."* |
-| *"FinView is India's first ever single insurance repository."* | *"IRDAI Repositories (CAMSRep, NSDL) already store e-policies; FinView acts as the citizen-friendly monitoring & lapse prevention layer."* |
-| *"We will make money by selling aggregated user data to insurers."* | *"Zero data selling (DPDP Act). Revenue comes from freemium subscriptions, B2B insurer lapse-prevention services, and corporate plans."* |
-| *"This demo connects directly to live government servers."* | *"This demo runs on a high-fidelity simulated FIP environment; production deployment will use authorized official onboarding."* |
+FinView adheres to the core tenets of the **Digital Personal Data Protection (DPDP) Act 2023**:
+
+1. **Lawful & Informed Consent:** Explicit affirmative action with transparent scope declarations before data access.
+2. **Purpose Limitation:** Data retrieved is strictly utilized for authorized financial monitoring.
+3. **Data Minimization & Time Bounding:** Access tokens automatically expire according to the user-selected data retention duration.
+4. **Unconditional Right of Withdrawal:** Consent revocation is supported with immediate token invalidation across all connected endpoints.
+5. **Zero Data Commercialization:** Personal financial records are never sold, rented, or shared with advertisers.
 
 ---
 
-## 📂 Project Structure
+## 🛠️ Tech Stack & Specifications
 
+* **Backend:** Node.js HTTP Server (Pure standard library implementation — zero runtime dependency footprint)
+* **Frontend:** Responsive Single-Page Application (SPA) utilizing modern Fintech UI, Tailwind-compatible styling, Lucide icons, and Chart.js.
+* **Authentication & Security:** RFC 7519 HMAC-SHA256 JWT tokens with standardized Account Aggregator metadata.
+* **Architecture:** Microservice-ready FIP endpoints (`/insurer/*`, `/investment/*`, `/bank/*`, `/consent/*`).
+
+---
+
+## 🚀 Quickstart Guide
+
+### Prerequisites
+* [Node.js](https://nodejs.org) (v16.x or higher)
+
+### Local Setup
+```bash
+# 1. Clone the repository
+git clone https://github.com/YOUR_USERNAME/finview-sih2026.git
+cd finview-sih2026
+
+# 2. Start the application server (No npm install required)
+node server.js
+
+# 3. Open the dashboard in your browser
+# Visit http://localhost:5000
 ```
-d:/PROJECT/SIH 2026/
-├── server.js               # Zero-dependency Node server (Consent Manager + 3 Mock FIPs + Static Router)
-├── data/
-│   └── mock_db.json        # Rich test dataset (urgent dues, grace periods, NPS, FDs, nominees)
-├── public/
-│   ├── index.html          # Interactive Single-Page App layout & Judge Inspector
-│   ├── app.js              # State manager, Chart.js integrations & API handlers
-│   └── styles.css          # Fintech UI design system, animations & responsive styling
-└── README.md               # Documentation & Judge presentation guide
-```
+
+---
+
+## ☁️ Deployment
+
+### Deploying to Vercel
+FinView includes native [`vercel.json`](vercel.json) configuration for instant zero-configuration deployment:
+
+1. Push this repository to **GitHub**.
+2. Connect your repository on **[Vercel Dashboard](https://vercel.com)**.
+3. Click **Deploy**. Vercel will automatically configure serverless API endpoints and static assets.
+
+---
+
+## 📖 Team & Research Documentation
+
+* For internal pitch guidelines, regulatory Q&A, and presentation strategy, refer to [`docs/JUDGE_QA.md`](docs/JUDGE_QA.md).
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
